@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Description>Sample order processing workflow demonstrating FlowForge capabilities</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FlowForge.Core\FlowForge.Core.csproj" />
+    <ProjectReference Include="..\..\src\FlowForge.Shared\FlowForge.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

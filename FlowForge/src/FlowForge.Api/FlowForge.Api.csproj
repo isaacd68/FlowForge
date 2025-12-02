@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <Description>REST API for FlowForge workflow engine</Description>
+    <PackageId>FlowForge.Api</PackageId>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FlowForge.Core\FlowForge.Core.csproj" />
+    <ProjectReference Include="..\FlowForge.Shared\FlowForge.Shared.csproj" />
+    <ProjectReference Include="..\FlowForge.Persistence.Postgres\FlowForge.Persistence.Postgres.csproj" />
+    <ProjectReference Include="..\FlowForge.Persistence.Redis\FlowForge.Persistence.Redis.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,40 @@
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+WORKDIR /src
+
+# Copy solution and project files
+COPY FlowForge.sln .
+COPY Directory.Build.props .
+COPY src/FlowForge.Shared/FlowForge.Shared.csproj src/FlowForge.Shared/
+COPY src/FlowForge.Core/FlowForge.Core.csproj src/FlowForge.Core/
+COPY src/FlowForge.Persistence.Postgres/FlowForge.Persistence.Postgres.csproj src/FlowForge.Persistence.Postgres/
+COPY src/FlowForge.Persistence.Redis/FlowForge.Persistence.Redis.csproj src/FlowForge.Persistence.Redis/
+COPY src/FlowForge.Api/FlowForge.Api.csproj src/FlowForge.Api/
+
+# Restore dependencies
+RUN dotnet restore src/FlowForge.Api/FlowForge.Api.csproj
+
+# Copy source code
+COPY src/ src/
+
+# Build and publish
+RUN dotnet publish src/FlowForge.Api/FlowForge.Api.csproj -c Release -o /app/publish --no-restore
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS runtime
+WORKDIR /app
+
+# Install curl for health checks
+RUN apk add --no-cache curl
+
+# Create non-root user
+RUN adduser -D -h /app appuser
+USER appuser
+
+COPY --from=build /app/publish .
+
+EXPOSE 8080
+
+ENV ASPNETCORE_URLS=http://+:8080
+
+ENTRYPOINT ["dotnet", "FlowForge.Api.dll"]
